@@ -60,7 +60,7 @@ public class Point implements Comparable<Point> {
      */
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
-        
+        return (Double) null;
     }
 
     /**
@@ -77,6 +77,7 @@ public class Point implements Comparable<Point> {
      */
     public int compareTo(Point that) {
         /* YOUR CODE HERE */
+        return (Integer) null;
     }
 
     /**
@@ -87,6 +88,7 @@ public class Point implements Comparable<Point> {
      */
     public Comparator<Point> slopeOrder() {
         /* YOUR CODE HERE */
+        return null;
     }
 
 
