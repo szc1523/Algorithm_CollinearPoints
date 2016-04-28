@@ -36,8 +36,10 @@ public class FastCollinearPoints {
         ArrayList<LineSegment> seglist = new ArrayList<LineSegment>();
         //must length - 3
         for (int p = 0; p < points.length - 3; p++) {
-            //how to use this comparator
-            //Arrays.sort(points, points[p].slopeOrder());
+            //mistake : define a double[] slope! and sort
+            //can't use this new slope to index point
+            //cause sort change the order of slope
+
             
             //make slopes Double to use merge sort
             //for the stability of merge sort
@@ -51,11 +53,15 @@ public class FastCollinearPoints {
                 if (slopes[i].equals(slopes[i + 1]) && 
                         slopes[i].equals(slopes[i + 2])) {
                     int j = 0;
-                    while (i + 2 + j < slopes.length && 
-                            slopes[i].equals(slopes[i + 2 + j])) {
+                    while (i + 2 + j + 1 < slopes.length && 
+                            slopes[i].equals(slopes[i + 2 + j + 1])) {
                         j++;
                     }
-                    seglist.add(new LineSegment(points[p], points[p + i + 2 + j]));
+                    LineSegment l = new LineSegment(points[p], 
+                            points[p + i + 3 + j]);
+                    seglist.add(l);
+                    l.draw();                    
+                    i = i + 2 + j + 1;  //start from a new unconnected point
                 }
             }            
         }   
