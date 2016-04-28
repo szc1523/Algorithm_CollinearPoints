@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MergeBU;
@@ -32,39 +34,44 @@ public class FastCollinearPoints {
                         + "a repeated point");
         }
         
-        //detect line segment
+        //initialize array list
         ArrayList<LineSegment> seglist = new ArrayList<LineSegment>();
-        //must length - 3
-        for (int p = 0; p < points.length - 3; p++) {
-            //mistake : define a double[] slope! and sort
-            //can't use this new slope to index point
-            //cause sort change the order of slope
-
+        ArrayList<Point>       plist = new ArrayList<Point>(); 
+        for (int i = 0; i < points.length; i++)
+            plist.add(points[i]);
+        
+        //mistake1 : define a double[] slope! and sort
+        //can't use this new slope to index point
+        //cause sort change the order of slope
+        
+        //mistake2 : iterate of points, cause this will make 
+        //redundant line segments
+        while (plist.size() > 3) {
+            Collections.sort(plist, plist.get(0).slopeOrder());
+            double[] slopes = new double[plist.size() - 1];
+            for (int i = 0; i < plist.size() - 1; i++) {
+                slopes[i] = plist.get(0).slopeTo(plist.get(i + 1));
+            }
             
-            //make slopes Double to use merge sort
-            //for the stability of merge sort
-            Double[] slopes = new Double[points.length - p - 1];   
-            for (int i = p + 1; i < points.length; i++) {
-                slopes[i - p - 1] = points[p].slopeTo(points[i]);
-            }          
-            //MergeBU.sort(slopes);
-            Arrays.sort(slopes);
             for (int i = 0; i < slopes.length - 3; i++) {
-                if (slopes[i].equals(slopes[i + 1]) && 
-                        slopes[i].equals(slopes[i + 2])) {
+                if (slopes[i] == slopes[i + 1] && slopes[i] == slopes[i + 2]) {
                     int j = 0;
                     while (i + 2 + j + 1 < slopes.length && 
-                            slopes[i].equals(slopes[i + 2 + j + 1])) {
+                            slopes[i] == slopes[i + 2 + j + 1]) {
                         j++;
                     }
-                    LineSegment l = new LineSegment(points[p], 
-                            points[p + i + 3 + j]);
+                    LineSegment l = new LineSegment(plist.get(0), 
+                            plist.get(i + j + 3));
                     seglist.add(l);
                     l.draw();                    
                     i = i + 2 + j + 1;  //start from a new unconnected point
                 }
-            }            
-        }   
+            } 
+            plist.remove(0);
+            Collections.sort(plist, plist.get(0).slopeOrder());
+        }
+        plist = null;
+        
         lines = seglist.toArray(new LineSegment[count]); 
         count = seglist.size();
 
