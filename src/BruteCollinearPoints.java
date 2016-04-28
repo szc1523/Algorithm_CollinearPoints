@@ -16,11 +16,21 @@ public class BruteCollinearPoints {
     private final int count;
     
     // put all the code in constructor to make final work
-    public BruteCollinearPoints(Point[] points) {
+    public BruteCollinearPoints(Point[] inPoints) {
         // initialize points
-        //directly use .clone() method! instead of assignment !!
-        this.points = points.clone();
+        //may directly use .clone() method
+        //.clone itself include null pointer exception
+        if (inPoints == null)
+            throw new NullPointerException("input pointer is null");
+        points = inPoints.clone();
+        
         Arrays.sort(points);
+        for (int i = 0; i < points.length - 1; i++) {
+            //points[i].compare???
+            if (points[i] == points[i + 1])
+                throw new IllegalArgumentException("input contains "
+                        + "a repeated point");
+        }
         
         //detect line segment
         ArrayList<LineSegment> seglist = new ArrayList<LineSegment>();
