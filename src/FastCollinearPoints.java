@@ -51,8 +51,11 @@ public class FastCollinearPoints {
             for (int i = 0; i < plist.size() - 1; i++) {
                 slopes[i] = plist.get(0).slopeTo(plist.get(i + 1));
             }
-            
-            for (int i = 0; i < slopes.length - 3; i++) {
+            //detect equal slopes
+            int i = 0;
+            //its length - 2 !!!!! i wrote length - 3 
+            //slope is smaller than points
+            while (i < slopes.length - 2) {
                 if (slopes[i] == slopes[i + 1] && slopes[i] == slopes[i + 2]) {
                     int j = 0;
                     while (i + 2 + j + 1 < slopes.length && 
@@ -62,14 +65,18 @@ public class FastCollinearPoints {
                     LineSegment l = new LineSegment(plist.get(0), 
                             plist.get(i + j + 3));
                     seglist.add(l);
-                    l.draw();                    
-                    i = i + 2 + j + 1;  //start from a new unconnected point
-                }
-            } 
+                    l.draw();    
+                    //start from a new unconnected point
+                    //there is already an i++ in the for loop
+                    i = i + 2 + j;   
+                }                
+                i++;
+            }         
             plist.remove(0);
             Collections.sort(plist);
         }
         plist = null;
+        
         
         count = seglist.size();
         lines = seglist.toArray(new LineSegment[count]); 
@@ -111,6 +118,7 @@ public class FastCollinearPoints {
             l.draw();  
             StdOut.println(l.toString());
         }
+        StdOut.println(lines.length);
     }
 
 }
