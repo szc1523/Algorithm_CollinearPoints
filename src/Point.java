@@ -9,13 +9,16 @@
  ******************************************************************************/
 
 import java.util.Comparator;
+
 import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
 
 public class Point implements Comparable<Point> {
 
     private final int x;     // x-coordinate of this point
     private final int y;     // y-coordinate of this point
-
+    
+    private final Comparator<Point> compSlope = new CompSlope();
     /**
      * Initializes a new point.
      *
@@ -60,7 +63,11 @@ public class Point implements Comparable<Point> {
      */
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
-        return (Double) null;
+        if (this.x == that.x && this.y == that.y)
+            return Double.NEGATIVE_INFINITY;
+        if (this.x == that.x)
+            return Double.POSITIVE_INFINITY; 
+        return (double) (that.y - this.y)/(that.x - this.x);
     }
 
     /**
@@ -77,7 +84,12 @@ public class Point implements Comparable<Point> {
      */
     public int compareTo(Point that) {
         /* YOUR CODE HERE */
-        return (Integer) null;
+        if (this.y == that.y && this.x == that.x)
+            return 0;
+        if (this.y < that.y || this.y == that.y && this.x < that.x)
+            return -1;
+        else
+            return 1;
     }
 
     /**
@@ -87,10 +99,19 @@ public class Point implements Comparable<Point> {
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        /* YOUR CODE HERE */
-        return null;
+        /* YOUR CODE HERE */        
+        return compSlope;
     }
 
+    //cite leonid-ed in github;
+    private class CompSlope implements Comparator<Point> {
+        public int compare(Point a, Point b) {
+            double slopea = slopeTo(a);
+            double slopeb = slopeTo(b);
+            //slopeTo already contains all kinds of circumstances
+            return Double.compare(slopea, slopeb);
+        }
+    }
 
     /**
      * Returns a string representation of this point.
@@ -108,6 +129,18 @@ public class Point implements Comparable<Point> {
      * Unit tests the Point data type.
      */
     public static void main(String[] args) {
-        /* YOUR CODE HERE */
+        Point p  = new Point(0, 0);
+        Point[] q = new Point[5];
+        q[0]     = new Point(0, 1);
+        q[1]     = new Point(-1, 0);
+        q[2]     = new Point(0, 0);
+        q[3]     = new Point(-4, 3);
+        for (int i = 0; i < 4; i++) {
+            //StdOut.println(p.slopeTo(q[i]));
+        }
+        
+        for (int i = 0; i < 4; i++) {
+            StdOut.println(p.compareTo(q[i]));
+        }        
     }
 }
