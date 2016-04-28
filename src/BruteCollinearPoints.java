@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
 
 
 public class BruteCollinearPoints {
@@ -38,7 +39,7 @@ public class BruteCollinearPoints {
         //detect line segment
         ArrayList<LineSegment> seglist = new ArrayList<LineSegment>();
         //mind i < length - 4
-        for (int p = 0; p < points.length - 4; p++)
+        for (int p = 0; p < points.length - 3; p++)
             for (int q = p + 1; q < points.length; q++)
                 for (int r = q + 1; r < points.length; r++)
                     for (int s = r + 1; s < points.length; s++)
@@ -58,7 +59,9 @@ public class BruteCollinearPoints {
     }
     
     public LineSegment[] segments() {
-        return lines;
+        //return lines make internal pointer dereferenced by clients
+        LineSegment[] lines2 = lines.clone();
+        return lines2;
     }
     
     public static void main(String[] args) {
@@ -83,9 +86,11 @@ public class BruteCollinearPoints {
         //draw line segment
         BruteCollinearPoints brute = new BruteCollinearPoints(points);
         LineSegment[] lines = brute.segments();
-        for (LineSegment l: lines)
-            l.draw();       
-        
+        for (LineSegment l: lines) {
+            l.draw(); 
+            StdOut.println(l.toString());
+        }         
+        StdOut.println(lines.length);
     }
 
 }

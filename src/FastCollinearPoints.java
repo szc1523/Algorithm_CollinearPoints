@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.MergeBU;
 import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
 
 /* 
  * by Sun Zhicheng 
@@ -68,13 +67,12 @@ public class FastCollinearPoints {
                 }
             } 
             plist.remove(0);
-            Collections.sort(plist, plist.get(0).slopeOrder());
+            Collections.sort(plist);
         }
         plist = null;
         
-        lines = seglist.toArray(new LineSegment[count]); 
         count = seglist.size();
-
+        lines = seglist.toArray(new LineSegment[count]); 
     }
 
     public int numberOfSegments() {
@@ -82,7 +80,9 @@ public class FastCollinearPoints {
     }
     
     public LineSegment[] segments() {
-        return lines;
+        //return lines make internal pointer dereferenced by clients
+        LineSegment[] lines2 = lines.clone();
+        return lines2;
     }
     
     public static void main(String[] args) {
@@ -107,8 +107,10 @@ public class FastCollinearPoints {
         //detect line segment
         FastCollinearPoints fast = new FastCollinearPoints(points);
         LineSegment[] lines = fast.segments();
-        for (LineSegment l: lines)
+        for (LineSegment l: lines) {
             l.draw();  
+            StdOut.println(l.toString());
+        }
     }
 
 }
