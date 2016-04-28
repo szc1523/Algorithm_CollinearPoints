@@ -1,14 +1,16 @@
+/* 
+ * by Sun Zhicheng 
+ * for coursera course Algorithms 
+ * week 3 Assignment: Collinear Point
+ */
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 
-/* 
- * by Sun Zhicheng 
- * for coursera course Algorithms 
- * week 3 Assignment: Collinear Point
- */
+
 public class BruteCollinearPoints {
     // means can't change points but can change points[i]
     private final Point[] points; 
@@ -23,11 +25,12 @@ public class BruteCollinearPoints {
         if (inPoints == null)
             throw new NullPointerException("input pointer is null");
         points = inPoints.clone();
-        
+        //sort array to detect repeated point.
         Arrays.sort(points);
         for (int i = 0; i < points.length - 1; i++) {
-            //points[i].compare???
-            if (points[i] == points[i + 1])
+            //must use points[i].compare!
+            //can't use point[i] = point[i + 1]!!!
+            if (points[i].compareTo(points[i + 1]) == 0)
                 throw new IllegalArgumentException("input contains "
                         + "a repeated point");
         }
