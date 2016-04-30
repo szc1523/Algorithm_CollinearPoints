@@ -17,6 +17,7 @@ public class FastCollinearPoints {
     private int count;
     
     public FastCollinearPoints(Point[] inPoints) {
+        
         //initialize points
         if (inPoints == null)
             throw new NullPointerException("input pointer is null");
@@ -33,8 +34,7 @@ public class FastCollinearPoints {
         
         //initialize array list for line segment and point save
         ArrayList<LineSegment> seglist = new ArrayList<LineSegment>();
-        ArrayList<Point> ps = new ArrayList<Point>();
-        
+            
         //mistake 1 : define a double[] slope! and sort
         //can't use this new slope to index point
         //cause sort change the order of slope
@@ -44,29 +44,31 @@ public class FastCollinearPoints {
         int p = 0;
         while (p < pts.length - 3) {            
             Arrays.sort(pts, pts[p].slopeOrder());
-            
+            double[] slopes = new double[pts.length];
+            for (int i = 0; i < pts.length; i++)
+                slopes[i] = pts[0].slopeTo(pts[i]);
             
             //detect equal slopes
             // use i = 3 and check slopes[i] == slopes[i - 1] is much easier!!!
             int i = 0; 
             //its length - 2 !!!!! i wrote length - 3 
             while (i < pts.length - 2) {
-                if (pts[0].slopeTo(pts[i]) == pts[0].slopeTo(pts[i + 1]) 
-                        && pts[0].slopeTo(pts[i]) == pts[0].slopeTo(pts[i + 2])) {
+                if (slopes[i] == slopes[i + 1] 
+                        && slopes[i] == slopes[i + 2]) {
                     int j = 0;
-                    while (i + 2 + j + 1 < pts.length && pts[0].slopeTo(pts[i]) 
-                            == pts[0].slopeTo(pts[i + 2 + j + 1])) {
+                    while (i + 2 + j + 1 < pts.length && slopes[i] 
+                            == slopes[i + 2 + j + 1]) {
                         j++;
                     }
-/*                    if (isExist(ps, pts[i + 2 + j])) {
+                    if (isDuplicate(i, j)) {
                         i = i + 2 + j;
                         continue;
-                    }*/
+                    }                        
+                    
                     LineSegment l = new LineSegment(pts[0], 
                             pts[i + j + 2]);
                     seglist.add(l);
-                    l.draw();    
-                    //ps.add(pts[0]); // save an end point
+                    //l.draw();    
                     
                     //start from a new unconnected point
                     //there is already an i++ in the for loop
@@ -88,15 +90,17 @@ public class FastCollinearPoints {
     
     public LineSegment[] segments() {
         //return lines make internal pointer dereferenced by clients
-        //LineSegment[] lines2 = lines.clone();
+        LineSegment[] lines2 = lines.clone();
         //use cast can prevent dereference????
-        return (LineSegment[]) lines;
+        return (LineSegment[]) lines2;
     }
     
-    private boolean isExist(ArrayList<Point> ps, Point p) {
-        for (Point i : ps) {
-            if (i.compareTo(p) == 0)
+    private boolean isDuplicate(int i, int j) {
+        for (int k = 0; k < j + 2; k++) {
+            //its > = instead of ==1. to avoid dependence on ==1
+            if (pts[0].compareTo(pts[i + k]) > 0) {
                 return true;
+            }
         }
         return false;
     }

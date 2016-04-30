@@ -58,10 +58,11 @@ public class BruteCollinearPoints {
     }
     
     public LineSegment[] segments() {
-        //return lines make internal pointer dereferenced by clients
-        //LineSegment[] lines2 = lines.clone();
+        LineSegment[] lines2 = lines.clone();
+        return lines2; //make internal pointer dereferenced by clients
+        
         //use cast can prevent dereference????
-        return (LineSegment[]) lines; 
+        //return (LineSegment[]) lines; 
     }
     
     public static void main(String[] args) {
