@@ -50,6 +50,7 @@ public class FastCollinearPoints {
             
             //detect equal slopes
             // use i = 3 and check slopes[i] == slopes[i - 1] is much easier!!!
+            //actually, i should have use head and tail to deal with it 
             int i = 0; 
             //its length - 2 !!!!! i wrote length - 3 
             while (i < pts.length - 2) {
