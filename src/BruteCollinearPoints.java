@@ -11,7 +11,6 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
-
 public class BruteCollinearPoints {
     // means can't change points but can change points[i]
     private final Point[] points; 
@@ -60,8 +59,9 @@ public class BruteCollinearPoints {
     
     public LineSegment[] segments() {
         //return lines make internal pointer dereferenced by clients
-        LineSegment[] lines2 = lines.clone();
-        return lines2;
+        //LineSegment[] lines2 = lines.clone();
+        //use cast can prevent dereference????
+        return (LineSegment[]) lines; 
     }
     
     public static void main(String[] args) {
