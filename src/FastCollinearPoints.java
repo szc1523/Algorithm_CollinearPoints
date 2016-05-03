@@ -41,6 +41,7 @@ public class FastCollinearPoints {
         
         //mistake 2 : use ArrayList to delete points after each iteration
         //cause this will also make redundant line segments
+        //and i need information of previous points
         int p = 0;
         while (p < pts.length - 3) {            
             Arrays.sort(pts, pts[p].slopeOrder());
@@ -69,7 +70,6 @@ public class FastCollinearPoints {
                     LineSegment l = new LineSegment(pts[0], 
                             pts[i + j + 2]);
                     seglist.add(l);
-                    //l.draw();    
                     
                     //start from a new unconnected point
                     //there is already an i++ in the for loop
