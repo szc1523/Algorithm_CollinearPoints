@@ -18,7 +18,7 @@ public class Point implements Comparable<Point> {
     private final int x;     // x-coordinate of this point
     private final int y;     // y-coordinate of this point
     
-    private final Comparator<Point> compSlope = new CompSlope();
+    //private final Comparator<Point> compSlope = new CompSlope();
     /**
      * Initializes a new point.
      *
@@ -102,17 +102,16 @@ public class Point implements Comparable<Point> {
      */
     public Comparator<Point> slopeOrder() {
         /* YOUR CODE HERE */        
-        return compSlope;
+        return new SlopeOrder();
     }
 
-    //cite leonid-ed in github;
-    private class CompSlope implements Comparator<Point> {
+    //cite leonid-ed in github; it uses extra memory
+    //cite http://blog.csdn.net/yunhsiao/article/details/50405328
+    private class SlopeOrder implements Comparator<Point> {
         public int compare(Point a, Point b) {
-            double slopea = slopeTo(a);
-            double slopeb = slopeTo(b);
             //slopeTo already contains all kinds of circumstances
             //use Double.compare
-            return Double.compare(slopea, slopeb);
+            return Double.compare(slopeTo(a), slopeTo(b));
         }
     }
 
